@@ -4,6 +4,6 @@ export class ApplicationError extends Error
     {
         super( message );
         
-        this.code = code;
+        this.statuscode = code;
     }
 }

@@ -11,4 +11,4 @@ export const logout = asyncWrapper( async ( req, res ) => { } );
 
 export const requestPasswordReset = asyncWrapper( async ( req, res ) => { } );
 
-export const resetPasswordReset = asyncWrapper( async ( req, res ) => { } );
+export const resetPassword = asyncWrapper( async ( req, res ) => { } );

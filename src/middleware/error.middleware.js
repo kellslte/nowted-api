@@ -4,10 +4,10 @@ const errorHandler = function ( error, req, res )
 {
     if ( error instanceof ApplicationError )
     {
-        return res.status( error.code ).json( {
+        return res.status( error.statuscode ).json( {
             success: false,
             message: error.message,
-            error_code: error.code
+            error_code: error.statuscode
         } );
     }
 

@@ -4,20 +4,32 @@ dotenv.config();
 
 const config = {
     server: {
-        port: process.env.PORT
+        port: process.env.PORT,
+        secret: process.env.APP_SECRET
     },
     connectToDatabase: function ()
     {
         mongoose.Promise = Promise;
 
-        mongoose.connect( process.env.MONGODB_URL );
+        mongoose.connect(process.env.MONGODB_URI);
 
-        mongoose.on( 'error', ( e ) => console.error( `Could not connect to MongoDB database. Error: ${e.message} ☣ ` ) );
+        mongoose.connection.on( 'error', ( e ) => console.error( `Could not connect to MongoDB database. Error: ${e.message} ☣ ` ) );
         
-        mongoose.on( 'connection', () => console.info( `Database connection established 🚀 ` ) );
+        mongoose.connection.on( 'open', () => console.info( `Database connection established 🚀 ` ) );
     },
     services: {
-        mail: {}
+        mail: {
+            host: process.env.MAIL_HOST,
+            port: process.env.MAIL_PORT,
+            auth: {
+                user: process.env.MAIL_USERNAME,
+                pass: process.env.MAIL_PASS
+            }
+        },
+        jwt: {
+            secret: process.env.JWT_SECRET,
+            expires: process.env.JWT_EXPIRES
+        }
     }
 }
 
