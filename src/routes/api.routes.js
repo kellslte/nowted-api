@@ -1,4 +1,5 @@
-
+import { Router } from "express";
+const router = Router();
 
 // auth routes
 
@@ -11,3 +12,6 @@
 // favourite routes
 
 // trash routes
+
+
+export default router;
