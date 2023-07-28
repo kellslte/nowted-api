@@ -1,20 +1,23 @@
+import config from '../config/main.config.js';
 import { ApplicationError } from '../helpers/error.helper.js';
 
-const errorHandler = function ( error, req, res )
+const errorHandler = function ( err, req, res, next )
 {
-    if ( error instanceof ApplicationError )
+    if ( err instanceof ApplicationError )
     {
-        return res.status( error.statuscode ).json( {
+        res.status( err.statuscode ).json( {
             success: false,
-            message: error.message,
-            error_code: error.statuscode
+            message: err.message,
+            error_code: err.statuscode,
+            stack: config.server.mode === 'development' ? err.stack : {}
         } );
     }
 
-    return res.status( 500 ).json( {
-        success: false,
-        message: error.message
-    })
+    res.status(500).json({
+      success: false,
+      message: err.message,
+      stack: config.server.mode === "development" ? err.stack : {},
+    });
 }
 
 export default errorHandler;

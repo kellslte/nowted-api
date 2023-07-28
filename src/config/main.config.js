@@ -5,7 +5,8 @@ dotenv.config();
 const config = {
     server: {
         port: process.env.PORT,
-        secret: process.env.APP_SECRET
+        secret: process.env.APP_SECRET,
+        mode: process.env.NODE_ENV,
     },
     connectToDatabase: function ()
     {

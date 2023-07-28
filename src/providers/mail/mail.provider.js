@@ -11,8 +11,17 @@ mailer.use( 'compile', hbs( {
         layoutsDir: 'templates/',
         defaultLayout: false,
     },
-    viewPath: join( __dirname, './templates/' ),
+    viewPath: join( process.cwd(), '/src/providers/mail/templates/' ),
     extName: '.hbs'
 }) );
 
-export const sendMail = function (){}
+export const sendMail = function ( to, template, subject, options )
+{   
+    return mailer.sendMail( {
+        to,
+        subject,
+        from: 'Nowted <no-reply@nowted.co>',
+        template: template,
+        context: options
+    } );
+}
