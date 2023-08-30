@@ -6,9 +6,11 @@ import errorHandler from './middleware/error.middleware.js';
 import config from './config/main.config.js';
 import router from './routes/api.routes.js';
 import listAppRoutes from 'express-list-routes';
+import http from 'http';
 
 // define application
 const app = express();
+const server = http.createServer(app);
 
 // define application middleware
 app.use( express.json( { extended: true } ) );
@@ -32,4 +34,4 @@ app.use( errorHandler );
 listAppRoutes(app);
 
 // start application server
-app.listen(config.server.port, () => console.log(`Starting server at ${config.server.port}`));
+server.listen(config.server.port, () => console.log(`Starting server at ${config.server.port}`));

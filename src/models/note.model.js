@@ -1,5 +1,4 @@
-import { Schema, model } from 'mongoose';
-import User from './user.model.js';
+import { Schema, model, Types } from 'mongoose';
 
 const NoteSchema = new Schema( {
     title: {
@@ -9,7 +8,7 @@ const NoteSchema = new Schema( {
 
     date: {
         type: Date,
-        required: true
+        default: Date.now()
     },
 
     body: {
@@ -32,9 +31,9 @@ const NoteSchema = new Schema( {
         default: false
     },
 
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+    folder: {
+        type: Types.ObjectId,
+        ref: 'Folder'
     }
 }, { timestamps: true } );
 

@@ -1,16 +1,22 @@
-import { Schema, model } from "mongoose";
-import User from "./user.model.js";
+import { Schema, model, Types } from "mongoose";
 
 const FolderSchema = new Schema( {
     user: {
-        type: User,
+        type: Types.ObjectId,
+        ref: 'User'
+    },
+
+    name: {
+        type: String,
         required: true
     },
 
-    folders: {
-        type: Object,
-        default: {},
-    }
+    notes: [{
+        type: Types.ObjectId,
+        ref: 'Note',
+    }]
 }, { timestamps: true } );
 
 const Folder = model( 'Folder', FolderSchema );
+
+export default Folder;

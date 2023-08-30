@@ -21,7 +21,7 @@ const UserSchema = new Schema(
 
     folders: {
       type: Object,
-      default: {},
+      default: [],
     },
   },
   { timestamps: true }

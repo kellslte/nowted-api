@@ -21,12 +21,6 @@ export const register = async function (payload) {
     password: hash,
   });
 
-  /* 
-    take the input from the user and hash it
-    "a super secret password" = "argih28793bjikuhsdfake$ijoiahioh8ughsdfnk#njiasoifdhiedofe$ijf"
-    then store the hash in the database
-    */
-
   return await user.save();
 };
 
@@ -92,15 +86,15 @@ export const resetPassword = async function (payload) {
   // get the password reset record
   const resetRecord = await PasswordReset.findOne({ user });
 
-  if (!resetRecord || argon.verify(resetRecord.resetToken, token.toString()))
+  if (!resetRecord || !(await argon.verify(resetRecord.resetToken, token.toString())))
     throw new ApplicationError("Invalid token", 400);
 
-  const hash = argon.hash(password);
+  const hash = await argon.hash(password);
 
   user.password = hash;
   await user.save();
 
-  await PasswordReset.findOneByIdAndDelete(resetRecord.id);
+  await PasswordReset.findOneAndDelete({ _id: resetRecord.id});
 
   return true;
 };

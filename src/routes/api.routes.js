@@ -3,8 +3,9 @@ import { login, register, requestPasswordReset, resetPassword } from "../control
 import { createNote, deleteNote, getNote, getNotes, updateNote } from "../controllers/note.controller.js";
 import { createFolder, deleteFolder, getFolder, getFolders, updateFolder } from "../controllers/folder.controller.js";
 import { addItemToArchive, getArchivedItems, removeItemFromArchive } from "../controllers/archive.controller.js";
-import { addItemToFavourites, clearFavourites, getFavouriteNotes, removeItemFromFavourites } from "../controllers/favourite.controller.js";
-import { addNoteToTrash, clearTrash, getTrashedNotes, removeNoteFromTrash } from "../controllers/trash.controller.js";
+import { addItemToFavourites, getFavouriteNotes, removeItemFromFavourites } from "../controllers/favourite.controller.js";
+import { addNoteToTrash, getTrashedNotes, removeNoteFromTrash } from "../controllers/trash.controller.js";
+import authMiddleware from "../middleware/auth.middleware.js";
 const router = Router();
 
 // auth routes
@@ -14,35 +15,41 @@ router.post( '/auth/forgot-password', requestPasswordReset );
 router.post('/auth/reset-password', resetPassword );
 
 // note routes
-router.get( '/notes', getNotes );
-router.get( '/notes/:id', getNote );
-router.post( '/notes', createNote );
-router.put( '/notes/:id', updateNote );
-router.delete( '/notes/:id', deleteNote );
+router.get("/user/notes", authMiddleware, getNotes);
+router.get("/user/notes/:note", authMiddleware, getNote);
+router.post("/user/notes/:folder", authMiddleware, createNote);
+router.put("/user/notes/:note", authMiddleware, updateNote);
+router.delete("/user/notes/:note", authMiddleware, deleteNote);
 
 // folder routes
-router.get( '/folders', getFolders );
-router.get( '/folders/:id', getFolder );
-router.post( '/folders', createFolder );
-router.put( '/folders/:id', updateFolder );
-router.delete( '/folders/:id', deleteFolder );
+router.get( '/user/folders', authMiddleware, getFolders );
+router.get( '/user/folders/:folder', authMiddleware, getFolder );
+router.post("/user/folders", authMiddleware, createFolder);
+router.put("/user/folders/:folder", authMiddleware, updateFolder);
+router.delete("/user/folders/:folder", authMiddleware, deleteFolder);
 
 // archive routes
-router.get( '/archive/notes', getArchivedItems );
-router.post( '/archive/notes/:id', addItemToArchive );
-router.delete( '/archive/notes/:id', removeItemFromArchive );
+router.get("/user/archive/notes", authMiddleware, getArchivedItems);
+router.post("/user/archive/notes/:note", authMiddleware, addItemToArchive);
+router.delete("/user/archive/notes/:note", authMiddleware, removeItemFromArchive);
 
 // favourite routes
-router.get( '/favourites', getFavouriteNotes );
-router.post( '/favourites/:id', addItemToFavourites );
-router.delete( '/favourites/notes/:id', removeItemFromFavourites );
-router.delete( '/favourites', clearFavourites );
+router.get("/user/favourites/notes", authMiddleware, getFavouriteNotes);
+router.post(
+  "/user/favourites/notes/:note",
+  authMiddleware,
+  addItemToFavourites
+);
+router.delete(
+  "/user/favourites/notes/:note",
+  authMiddleware,
+  removeItemFromFavourites
+);
 
 // trash routes
-router.get( "/trash", getTrashedNotes );
-router.post( '/trash/notes/:id', addNoteToTrash );
-router.delete( '/trash/notes/:id', removeNoteFromTrash );
-router.delete( '/trash', clearTrash );
+router.get("/user/trash", authMiddleware, getTrashedNotes);
+router.post("/user/trash/notes/:id", authMiddleware, addNoteToTrash);
+router.delete("/user/trash/notes/:id", authMiddleware, removeNoteFromTrash);
 
 
 export default router;
